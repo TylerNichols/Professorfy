@@ -1,0 +1,33 @@
+{
+  //https://developer.chrome.com/extensions/xhr
+  
+  "manifest_version": 2,
+
+  "name": "UDEL Professorfy",
+
+  "description": "Extension to show RateMyProfessor data on UDEL Course Catalog pages",
+
+  "version": "1.0",
+
+  "permissions": [
+    "tabs",
+    "https://udapps.nss.udel.edu/CoursesSearch/*",
+    "http://www.ratemyprofessors.com/*"
+  ],
+
+  "background": {
+    "scripts": ["jquery-2.1.4.js","eventPage.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+       "https://udapps.nss.udel.edu/CoursesSearch/*"
+      ],
+      "js": ["jquery-2.1.4.js","myscript.js"]
+    }
+  ]
+
+}
+
