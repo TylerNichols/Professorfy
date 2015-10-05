@@ -30,14 +30,7 @@ var pageText = getText();
 var pageHTML = getHTML();
 //console.log(pageHTML);
 
-//Regular expresion to match Sometext,Someletter -- format for professor names
-var myRe = /[a-zA-Z]+,[^ ]/g;
 
-//Array to contain matches to regular expression -- hopefully all professors (testing to be done)
-var array_matches = pageText.match(myRe);
-
-console.log(array_matches.length);
-console.log(array_matches);
 
 //Non Regular Expression method
 //Initializing Matching array, Class row index, and Proff. string
@@ -54,12 +47,11 @@ while(professorString!=null){
 	else{
 		//rid of whitespace and add to Matches array
 		professorString = professorString.replace(/(\r\n|\n|\r)/gm, '');
-		Matches[trIndex] = professorString
+		Matches[trIndex - 1] = professorString
 	}
 	trIndex++;
 }
-
-console.log(Matches);
+console.log(Matches.length);
 
 
 
@@ -69,21 +61,34 @@ console.log(Matches);
 
 var port = chrome.runtime.connect({name: "RMPify"});
 
-for(var i=0; i < array_matches.length; i++){
-	//array_matches now includes only last names
-	array_matches[i] = array_matches[i].replace(/,[A-Za-z]/g, "");
-	var url = urlFirstHalf + array_matches[i] + urlSecondHalf
+//Array to hold last name of professors
+var MatchesLastName = [];
+var lastName = "";
+var linkText = "";
+
+for(var i=0; i < Matches.length; i++){
+	//Parsing out first word - is actually last name 
+	lastName = Matches[i].split(",");
+	//if string still has spaces.. for example: Novocin PhD this is broken..
+
+
+	console.log(lastName[0]);
+	MatchesLastName[i] = lastName[0];
+
+	var url = urlFirstHalf + MatchesLastName[i] + urlSecondHalf
 
 	port.postMessage({Search: url});
 
 	port.onMessage.addListener(function(msg) {
 		if(msg.Response){
-			console.log(msg.Response); 
+			if(msg.Response != linkText){
+			console.log(msg.Response);
+			linkText = msg.Response;
+			}
 		}
 	});
 }
 
-console.log(array_matches);
 
 //alert("Hello from your Extension");
 

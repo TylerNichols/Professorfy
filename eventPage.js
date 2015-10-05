@@ -22,7 +22,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 			request.onreadystatechange = function() {
  				if (request.readyState == 4){
     				//alert(request.responseText);
-    				console.log (request.responseText);
+    				//console.log (request.responseText);
     				var RMPpage = request.responseText;
     				var RMPre = /([A-z]{11})\.[A-z]+\?+[A-z]+\=+[1-9]*/g
     				var url_matches = RMPpage.match(RMPre);
